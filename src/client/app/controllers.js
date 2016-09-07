@@ -5,33 +5,48 @@
     .module('bombbomb')
     .controller('youtubeCtrl', youtubeCtrl);
 
-    youtubeCtrl.$inject = ['$window'];
+    youtubeCtrl.$inject = ['$window', 'funnyVidService'];
 
-    function youtubeCtrl ($window) {
+    function youtubeCtrl ($window, funnyVidService) {
       var vm = this;
 
-          // <script>
-      // 2. This code loads the IFrame Player API code asynchronously.
-      var tag = document.createElement('script');
+      funnyVidService.getVideo()
+        .then(function (result) {
+          var rand = Math.floor(Math.random()*50)
+          console.log(rand);
+          console.log('result: ', result.data.myResult.items[rand].id.videoId);
+          var videoId = result.data.myResult.items[rand].id.videoId;
+          vm.title = result.data.myResult.items[rand].snippet.title
+          apiReady(videoId);
+        })
+        var player;
+      function apiReady (videoId) {
+            // <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
 
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      // 3. This function creates an <iframe> (and YouTube player)
-      //    after the API code downloads.
-      var player;
-      $window.onYouTubeIframeAPIReady = function () {
-        console.log('line35');
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-          videoId: 'M7lc1UVf-VE',
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        console.log('line33');
+        console.log(videoId);
+        $window.onYouTubeIframeAPIReady = function () {
+          console.log('line35');
+          console.log(videoId);
+          player = new YT.Player('player', {
+            height: '390',
+            width: '640',
+            // videoId: 'M7lc1UVf-VE',
+            videoId: videoId,
+            events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+            }
+          });
+        }
       }
       console.log(player);
 
