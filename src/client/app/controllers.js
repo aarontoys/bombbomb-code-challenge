@@ -59,11 +59,28 @@
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
       var done = false;
+      var count = 0;
       function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-          setTimeout(stopVideo, 6000);
-          done = true;
-        }
+        console.log('current time: ', player.getCurrentTime());
+        console.log(event);
+        console.log(event.data);
+        count += event.data;
+        console.log('the count is: ',count);
+        console.log('current time: ', player.getCurrentTime());
+        setTimeout(function () {
+          count = 0;
+          console.log('timeout reset count is: ', count);
+        },1500)
+        //   vm.time = 0;
+        // clearInterval(vm.myInt);
+        // vm.myInt = setInterval(function () {
+        //   vm.time++;
+        //   console.log(vm.time)
+        // },1000);
+        // if (event.data == YT.PlayerState.PLAYING && !done) {
+        //   setTimeout(stopVideo, 6000);
+        //   done = true;
+        // }
       }
       function stopVideo() {
         player.stopVideo();
