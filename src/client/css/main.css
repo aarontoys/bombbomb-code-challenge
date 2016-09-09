@@ -6,3 +6,24 @@ body {
 a {
   color: #00B7FF;
 }
+
+#myProgress {
+  width: 50%;
+  height: 100px;
+  position: relative;
+  background-color: #ddd;
+}
+
+#myBar {
+  background-color: #4CAF50;
+  width: 0px;
+  height: 100px;
+  position: absolute;
+}
+
+.pause {
+  background-color: #000000;
+  width: 1px;
+  height: 100px;
+  position: absolute;
+}
