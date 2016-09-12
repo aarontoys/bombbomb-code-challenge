@@ -13,8 +13,8 @@
       funnyVidService.getVideo()
         .then(function (result) {
           var rand = Math.floor(Math.random()*50)
-          console.log(rand);
-          console.log('result: ', result.data.myResult.items[rand].id.videoId);
+          // console.log(rand);
+          // console.log('result: ', result.data.myResult.items[rand].id.videoId);
           var videoId = result.data.myResult.items[rand].id.videoId;
           vm.title = result.data.myResult.items[rand].snippet.title
           apiReady(videoId);
@@ -34,8 +34,8 @@
         console.log('line33');
         console.log(videoId);
         $window.onYouTubeIframeAPIReady = function () {
-          console.log('line35');
-          console.log(videoId);
+          // console.log('line35');
+          // console.log(videoId);
           player = new YT.Player('player', {
             height: '390',
             width: '640',
@@ -65,10 +65,23 @@
       var duration = 0;
       var pauseCounter = 0;
       var trackingObj = {};
-      trackingObj[5] = 7;
+      // trackingObj[5] = 7;
       var start = 0;
       var timer;
             var timerArr = [];
+      var objTimer;
+      var rangeArr = [];
+      // var rangeArrObj = {};
+      var rangeStart = 0;
+      var rangeArrObjCount = 0;
+      var startPoints = [];
+
+      function rangeArrObj (start, end, count) {
+        this.start = start;
+        this.end = end;
+        this.count = count;
+      }
+
       function onPlayerStateChange(event) {
         console.log('status code: ', event.data);
         var totalDuration = player.getDuration();
@@ -82,14 +95,14 @@
             // console.log('start: ', Math.floor(player.getCurrentTime()));
             var bar = document.getElementById("myBar");
             var width = 0;
-            var timerRunning = false;
-            console.log(timerArr);
-            console.log(!timerArr.length);
+            // var timerRunning = false;
+            // console.log(timerArr);
+            // console.log(!timerArr.length);
             if (!timerArr.length) {
-              console.log('Interval Starting')
+              // console.log('Interval Starting')
               timer = setInterval(function () {
                 duration++;
-                width = (duration/totalDuration*100).toFixed(1);
+                width = (duration/totalDuration*10).toFixed(1);
                 bar.style.width = width + '%';
                 // console.log(duration);
                 trackingFxn(start, duration/10, player.getDuration());
@@ -98,23 +111,103 @@
               },100);
               timerArr.push(timer);
             }
-            console.log('case1',timer);
-            console.log('timerArr: ', timerArr, timerArr.length)
+
+            // var rangeS
+            objTimer = setInterval(function () {
+              console.log(trackingObj);
+              console.log(Object.keys(trackingObj));
+              console.log(Object.keys(trackingObj).length);
+                var prevKey;
+
+                // if (!rangeArr.length) {   // if lenght = 0, create new object
+                //   rangeArr[rangeArr.length] = new rangeArrObj (Object.keys(trackingObj)[0], Object.keys(trackingObj).length - 1) 
+                // } else {  // if lenght != 0, 
+                //   rangeArr.forEach(function(obj) {  // check each object of the array
+                //     if (obj.start !== Object.keys(trackingObj)[0]) {  // if start != 1st trackingObj key, create new Obj
+                //       rangeArr[rangeArr.length] = new rangeArrObj (Object.keys(trackingObj)[0], Object.keys(trackingObj).length - 1) 
+                //     } else {
+                //       obj.end = Object.keys(trackingObj).length - 1;
+                //     }
+                //   });
+                // }
+                // console.log('rangeArr: ', rangeArr);
+
+
+              var whichStart;
+
+              for (var key in trackingObj) {
+                // debugger;
+                var keyInt = parseInt(key);
+                // console.log(keyInt);
+
+                if (keyInt === (prevKey + 1)) {
+                  console.log('line142');
+                  // console.log(keyInt, prevKey, (prevKey + 1))
+                  // rangeArrObj.end = prevKey
+                  // rangeArr[whichIndex-1].end = keyInt;
+                  rangeArr[getIndex(startPoints,whichStart) || 0].end = keyInt;
+
+                } else if (!checkStartPoints(startPoints, keyInt)) {
+                  console.log('line147');
+                  rangeArr[rangeArr.length] = new rangeArrObj (keyInt);
+                  startPoints.push(keyInt);
+                  whichStart = keyInt;
+                  // whichIndex++;
+                } 
+                else {
+                  whichStart = keyInt;
+                }
+
+                // } else {
+                //   console.log('hmmmmmmm??????');
+                // }
+                prevKey = keyInt;
+
+
+
+
+
+
+
+                // console.log(key,': ',trackingObj[key]);
+                // if (checkStartPoints(startPoints, keyInt) && !rangeArr.length) {
+                  // if (!rangeArr.length) {
+                    // rangeArr[rangeArrObjCount] = new rangeArrObj (keyInt);
+                    // startPoints.push(keyInt)
+
+                  // }
+                  // new rangeArrObj (parseInt(key))
+                  // rangeArrObj.start = 0;
+                // } 
+
+
+
+
+
+
+              }
+                console.log('rangeArr: ', rangeArr);
+                console.log('startPoints: ', startPoints);
+
+            },1000);
+            // console.log('case1',timer);
+            // console.log('timerArr: ', timerArr, timerArr.length)
             // start = player.getCurrentTime().toFixed(1);
             break;
           case 2:
-            console.log('start: ', start);
+            // console.log('start: ', start);
             // console.log('duration ', duration/10);
             // console.log('pause: ', Math.floor(player.getCurrentTime()));
-            console.log('Interval Stopping')
-            console.log('case2',timer);
+            // console.log('Interval Stopping')
+            // console.log('case2',timer);
             // console.log('case 2, timer.length: ', timer.length);
-            console.log('timerArr: ', timerArr, timerArr.length)
+            // console.log('timerArr: ', timerArr, timerArr.length)
 
             clearInterval(timer);
+            clearInterval(objTimer);
             popArr(timerArr);
 
-            console.log('trackingObj: ', trackingObj);
+            // console.log('trackingObj: ', trackingObj);
             duration = 0;
               var pauseMarker = document.getElementsByClassName("pause");
         //   console.log('line101 ', elem);
@@ -124,7 +217,7 @@
             percentWatched = 0;
           // pauseMarker[pauseCounter].style.marginLeft = margin + '%';
             pauseCounter++; 
-            console.log('case2 percentWatched: ', percentWatched);
+            // console.log('case2 percentWatched: ', percentWatched);
 
             break;
 
@@ -132,14 +225,16 @@
             // if (!timerRunning) {
             //   break;
             // }
-            console.log('Interval Stopping')
-            console.log('case0',timer);
-            console.log('case 0, timer.length: ', timer.length);
+            // console.log('Interval Stopping')
+            // console.log('case0',timer);
+            // console.log('case 0, timer.length: ', timer.length);
 
             clearInterval(timer);
+            clearInterval(objTimer);
+
             duration = 0;
             percentWatched = 0;
-            console.log('trackingObj: ', trackingObj);
+            // console.log('trackingObj: ', trackingObj);
             popArr(timerArr);
             break;
         }
@@ -235,7 +330,7 @@
         if (arr.length === 1) {
           arr.pop();
         } else {
-          console.log('Timer Array Lenght is > 1!!!!');
+          // console.log('Timer Array Lenght is > 1!!!!');
         }
       }
 
@@ -258,6 +353,19 @@
           }
           // console.log(percentWatched);
       }
+
+      function checkStartPoints (arr, val) {
+        return arr.some(function (arrVal) {
+          return val === arrVal;
+        });
+      }
+
+      function getIndex (arr, val) {
+        return arr.findIndex(function (arrVal) {
+          return val === arrVal;
+        })
+      }
+
       function stopVideo() {
         player.stopVideo();
       }
