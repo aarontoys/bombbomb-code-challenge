@@ -115,9 +115,10 @@
             // var rangeS
             objTimer = setInterval(function () {
               console.log(trackingObj);
-              console.log(Object.keys(trackingObj));
-              console.log(Object.keys(trackingObj).length);
+              // console.log(Object.keys(trackingObj));
+              // console.log(Object.keys(trackingObj).length);
                 var prevKey;
+                var prevKeyVal;
 
                 // if (!rangeArr.length) {   // if lenght = 0, create new object
                 //   rangeArr[rangeArr.length] = new rangeArrObj (Object.keys(trackingObj)[0], Object.keys(trackingObj).length - 1) 
@@ -133,35 +134,79 @@
                 // console.log('rangeArr: ', rangeArr);
 
 
-              var whichStart;
+              var case1Start;
+              var case2Start;
+              var case3Start;
+              var case4Start;
+              var case5Start;
+              var prevCase;
+              var case2FirstIteration = true;
 
               for (var key in trackingObj) {
-                // debugger;
-                var keyInt = parseInt(key);
-                // console.log(keyInt);
+                // createPatternArr(key, prevKey, case1Start);
+                    var keyInt = parseInt(key);
+                // switch (trackingObj[key]) {
+                  // case 1:
+                    if (keyInt === (prevKey + 1) && trackingObj[key] === prevKeyVal) {
+                      // rangeArrObj.end = prevKey
+                      // rangeArr[whichIndex-1].end = keyInt;
+                      rangeArr[getIndex(startPoints,case1Start)].end = keyInt;
+                      rangeArr[getIndex(startPoints,case1Start)].count = trackingObj[key];
+                    // } else if (keyInt === (prevKey + 1) && trackingObj[key] <= prevKeyVal) {
+                      if (startPoints.indexOf(keyInt)+1) {
+                        rangeArr.splice(startPoints.indexOf(keyInt),1);
+                        startPoints.splice(startPoints.indexOf(keyInt),1);
+                      }
 
-                if (keyInt === (prevKey + 1)) {
-                  console.log('line142');
-                  // console.log(keyInt, prevKey, (prevKey + 1))
-                  // rangeArrObj.end = prevKey
-                  // rangeArr[whichIndex-1].end = keyInt;
-                  rangeArr[getIndex(startPoints,whichStart) || 0].end = keyInt;
 
-                } else if (!checkStartPoints(startPoints, keyInt)) {
-                  console.log('line147');
-                  rangeArr[rangeArr.length] = new rangeArrObj (keyInt);
-                  startPoints.push(keyInt);
-                  whichStart = keyInt;
-                  // whichIndex++;
-                } 
-                else {
-                  whichStart = keyInt;
+                    } else if (!checkStartPoints(startPoints, keyInt)) {
+                      rangeArr[rangeArr.length] = new rangeArrObj (keyInt, keyInt, trackingObj[key]);
+                      startPoints.push(keyInt);
+                      case1Start = keyInt;
+                    } 
+                    else {
+                      case1Start = keyInt;
+                      rangeArr[getIndex(startPoints,case1Start)].count = trackingObj[key];
+                    }
+
+                    prevKey = keyInt;
+                    prevKeyVal = trackingObj[key];
+                    prevCase = 1;
+                    // break;
+                  // case 2:
+
+                  //   if (keyInt === (prevKey + 1) && !case2FirstIteration) {
+                  //     rangeArr[getIndex(startPoints,case2Start)].end = keyInt;
+
+                  //   } else if (!checkStartPoints(startPoints, keyInt)) {
+                  //     rangeArr[rangeArr.length] = new rangeArrObj (keyInt, 2);
+                  //     startPoints.push(keyInt)
+                  //     case2Start = keyInt;
+                  //   } 
+                  //   else {
+                  //     case2Start = keyInt;
+                  //   }
+
+                    // prevKey = keyInt;
+                    // case2FirstIteration = false;
+                    // } 
+
+                    // if (keyInt === (prevKey + 1)) {
+                    //   // rangeArrObj.end = prevKey
+                    //   // rangeArr[whichIndex-1].end = keyInt;
+                    //   rangeArr[getIndex(startPoints,whichStart)].end = keyInt;
+                    // } else if (!checkStartPoints(startPoints, keyInt)) {
+                    //   rangeArr[rangeArr.length] = new rangeArrObj (keyInt, 1);
+                    //   startPoints.push(keyInt);
+                    //   whichStart = keyInt;
+                    // } 
+                    // else {
+                    //   whichStart = keyInt;
+                    // }
+
+                    // prevKey = keyInt;
+                    // break;
                 }
-
-                // } else {
-                //   console.log('hmmmmmmm??????');
-                // }
-                prevKey = keyInt;
 
 
 
@@ -185,7 +230,7 @@
 
 
 
-              }
+              // }
                 console.log('rangeArr: ', rangeArr);
                 console.log('startPoints: ', startPoints);
 
@@ -364,6 +409,25 @@
         return arr.findIndex(function (arrVal) {
           return val === arrVal;
         })
+      }
+
+      function createPatternArr (key, prevKey, whichStart) {
+                var keyInt = parseInt(key);
+
+                if (keyInt === (prevKey + 1)) {
+                  // rangeArrObj.end = prevKey
+                  // rangeArr[whichIndex-1].end = keyInt;
+                  rangeArr[getIndex(startPoints,whichStart) || 0].end = keyInt;
+                } else if (!checkStartPoints(startPoints, keyInt)) {
+                  rangeArr[rangeArr.length] = new rangeArrObj (keyInt);
+                  startPoints.push(keyInt);
+                  whichStart = keyInt;
+                } 
+                else {
+                  whichStart = keyInt;
+                }
+
+                prevKey = keyInt;
       }
 
       function stopVideo() {
