@@ -18,11 +18,8 @@ a {
 
 .viewed {
   width: 0px;
-  height: 200px;
+  height: 100px;
   position: absolute;
-  /*margin-top: -50px;*/
-  /*opacity: 0.5;*/
-  /*margin-left: 5px;*/
 }
 
 

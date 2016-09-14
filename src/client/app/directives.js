@@ -5,8 +5,6 @@
     .module('bombbomb')
     .directive('youtube', youtube);
 
-    // youtube.$inject = ['$window'];
-    
     function youtube () {
       return {
         restrict: 'EA',
