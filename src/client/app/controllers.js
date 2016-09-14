@@ -77,12 +77,21 @@
       function onPlayerStateChange(event) {
         // console.log('status code: ', event.data);
         var totalDuration = player.getDuration();
+        var increment = parseInt(.1/totalDuration*1000);
+        var factor;
+
+        if (totalDuration > 100) {
+          factor = 10;
+        } else {
+          factor = 1;
+        }
 
         switch (event.data) {
 
 
           case 1:
-            // start = player.getCurrentTime().toFixed(1);
+            var startFlag = true;
+            // var totota
             start = player.getCurrentTime();
 
 
@@ -233,29 +242,28 @@
         }
       }
 
-          var percentWatched = 0;
-      function trackingFxn (start, dur, totalDur) {
-        // console.log('start: ', start, ', duration: ', dur, ', totalDur: ', totalDur, ', start %: ', parseInt(start/totalDur*1000), ', end %: ', parseInt(dur/totalDur*1000));
-        // console.log('line200: ', parseInt(dur/totalDur*1000));
-        // console.log('percentWatched: ', percentWatched);
-          var currPercentWatched = parseInt(dur/totalDur*1000);
-          var startPercent = parseInt(start/totalDur*1000);
-          if (currPercentWatched == percentWatched) {
-            percentWatched = currPercentWatched + 1;
-            // console.log('percentWatched: ', percentWatched);
-            // if (trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]) {
-            if (trackingObj[startPercent + currPercentWatched]) {
-              // console.log('duplicate');
-              // trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]+= 1;
-              trackingObj[startPercent + currPercentWatched] += 1;
-            } else {
-              // console.log('non duplicate');
-              // trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)] = 1;
-              trackingObj[startPercent + currPercentWatched] = 1;
-            }
+      function trackingFxn (start, dur, totalDur, increment) {
+          var factor;
 
+          if (totalDur > 100) {
+            factor = 1000;
+          } else {
+            factor = 100;
           }
-          // console.log(percentWatched);
+
+          var currPercentWatched = parseInt(dur/totalDur*factor);
+          var startPercent = parseInt(start/totalDur*factor);
+          // percentWatched = increment;
+          // if (!increment) {
+            if (percentWatched === currPercentWatched) {
+            // if (currPercentWatched === percentWatched || currPercentWatched === increment) {
+              percentWatched = currPercentWatched + 1;
+              if (trackingObj[startPercent + currPercentWatched]) {
+                trackingObj[startPercent + currPercentWatched] += 1;
+              } else {
+                trackingObj[startPercent + currPercentWatched] = 1;
+              }
+            }
       }
 
       function checkStartPoints (arr, val) {
