@@ -90,7 +90,8 @@
 
 
           case 1:
-            start = player.getCurrentTime().toFixed(1);
+            // start = player.getCurrentTime().toFixed(1);
+            start = player.getCurrentTime();
 
             // console.log('start: ', Math.floor(player.getCurrentTime()));
             var bar = document.getElementById("myBar");
@@ -102,11 +103,12 @@
               // console.log('Interval Starting')
               timer = setInterval(function () {
                 duration++;
-                width = (duration/totalDuration*10).toFixed(1);
-                bar.style.width = width + '%';
+  //              width = (duration/totalDuration*10).toFixed(1);
+  //              bar.style.width = width + '%';
                 // console.log(duration);
                 trackingFxn(start, duration/10, player.getDuration());
                 // timerRunning = true;
+                console.log('rangeArr: ', rangeArr);
 
               },100);
               timerArr.push(timer);
@@ -423,15 +425,20 @@
         // console.log('start: ', start, ', duration: ', dur, ', totalDur: ', totalDur, ', start %: ', parseInt(start/totalDur*1000), ', end %: ', parseInt(dur/totalDur*1000));
         // console.log('line200: ', parseInt(dur/totalDur*1000));
         // console.log('percentWatched: ', percentWatched);
-          if (parseInt(dur/totalDur*1000) == percentWatched) {
-            percentWatched = parseInt(dur/totalDur*1000) + 1;
+          var currPercentWatched = parseInt(dur/totalDur*1000);
+          var startPercent = parseInt(start/totalDur*1000);
+          if (currPercentWatched == percentWatched) {
+            percentWatched = currPercentWatched + 1;
             // console.log('percentWatched: ', percentWatched);
-            if (trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]) {
+            // if (trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]) {
+            if (trackingObj[startPercent + currPercentWatched]) {
               // console.log('duplicate');
-              trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]+= 1;
+              // trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)]+= 1;
+              trackingObj[startPercent + currPercentWatched] += 1;
             } else {
               // console.log('non duplicate');
-              trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)] = 1;
+              // trackingObj[parseInt((start/totalDur + dur/totalDur)*1000)] = 1;
+              trackingObj[startPercent + currPercentWatched] = 1;
             }
 
           }

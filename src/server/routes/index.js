@@ -12,7 +12,9 @@ router.get('/funnyVid/', function(req, res, next) {
       part: 'snippet',
       maxResults: 50,
       q: req.params.q || 'funny fail',
-      key: apikey
+      key: apikey,
+      videoDuration: 'short',
+      type: 'video'
     },
     json: true
   };
