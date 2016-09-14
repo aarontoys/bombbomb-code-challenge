@@ -172,6 +172,45 @@
                     prevKey = keyInt;
                     prevKeyVal = trackingObj[key];
                     prevCase = 1;
+                  }
+  //              width = (duration/totalDuration*10).toFixed(1);
+  //              bar.style.width = width + '%';
+                  // var elements = document.getElementsByClassName('pause');
+                  // console.log('elements: ', elements);
+                  var classNameArr = ['a','b','c','d','e'];
+                  rangeArr.forEach(function(obj, index) {
+                    var width = (obj.end - obj.start + 1)/10 + "%";
+                    var leftMargin = obj.start/10 + "%";
+                    var id = 'id' + index;
+                    var colorClass;
+
+                    if (obj.count < 6) {
+                     colorClass = classNameArr[obj.count-1];
+                    } else {
+                      colorClass = classNameArr[4];
+                    }
+                    
+
+                    if (!index) {
+                      var firstDiv = document.getElementById(id);
+                      firstDiv.style.width = width
+                    } else if (!document.getElementById(id) ){
+                      var newDiv = document.createElement('div');
+                      var parentNode = document.getElementById('myProgress');
+                      newDiv.className = 'viewed ' + colorClass;
+                      newDiv.id = id;
+                      newDiv.style.width = width;
+                      newDiv.style.marginLeft = leftMargin;
+                      parentNode.appendChild(newDiv);
+                    } else {
+                      var existingDiv = document.getElementById(id);
+                      existingDiv.className = 'viewed ' + colorClass;
+                      existingDiv.style.width = width;
+                      existingDiv.style.marginLeft = leftMargin;
+
+                    }
+
+                  });
                     // break;
                   // case 2:
 
@@ -206,7 +245,7 @@
 
                     // prevKey = keyInt;
                     // break;
-                }
+                
 
 
 

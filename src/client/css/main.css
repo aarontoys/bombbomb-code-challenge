@@ -8,17 +8,42 @@ a {
 }
 
 #myProgress {
-  width: 50%;
+  width: 617px;
   height: 100px;
   position: relative;
   background-color: #ddd;
+  margin-left: 12px;
+
 }
 
-#myBar {
-  background-color: #F0FF00;
+.viewed {
   width: 0px;
-  height: 100px;
+  height: 200px;
   position: absolute;
+  /*margin-top: -50px;*/
+  /*opacity: 0.5;*/
+  /*margin-left: 5px;*/
+}
+
+
+.a {
+  background-color: #f0ff00;
+}
+
+.b {
+  background-color: #ffce00;
+}
+
+.c {
+  background-color: #ff9a00;
+}
+
+.d {
+  background-color: #ff5a00;
+}
+
+.e {
+  background-color: #ff0000;
 }
 
 .pause {
